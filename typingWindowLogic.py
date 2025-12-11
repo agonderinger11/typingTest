@@ -3,14 +3,22 @@ from typeGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import Qt
 
-class TypingDisplay(QTextEdit):      #I had AI give guidance for this section but it is not copy and pasted
-    def __init__(self, parent=None):            #This is essentially a new object similar to a label or line edit. 
-        
+class TypingDisplay(QTextEdit):   #I had AI give guidance for this section but it is not copy and pasted
+    """
+    This class is used to create an object that goes on top of the main window and acts as the typing test.
+    It handles the logic for changing the colors of the letters and dealing with keyboard input while selecting the object.
+    """
+    def __init__(self, parent=None) -> None:            #This is essentially a new object similar to a label or line edit. 
+        """
+        This creates the text box where the typing test shows up. 
+        In this function the styles and fonts are created for both the words and the text. 
+        Other class level variables are initialized here as well.
+        """
         super().__init__(parent)
-        self.targetText = ""  # The  sentence the user needs to type
-        self.typedText = "" #What they actually typed
-        self.parent_logic = None #Connects this to the other logic class and its functions
-        self.testActive = False
+        self.targetText: str = ""  # The  sentence the user needs to type
+        self.typedText: str = "" #What they actually typed
+        self.parentLogic = None #Connects this to the other logic class and its functions
+        self.testActive: bool = False
         
         self.setReadOnly(True)
         font = QFont("Courier New", 18) 
@@ -41,7 +49,11 @@ class TypingDisplay(QTextEdit):      #I had AI give guidance for this section bu
         self.blockCursorFormat.setBackground(QColor(255, 215, 0, 100)) # Gold/Yellow translucent
         self.blockCursorFormat.setForeground(QColor("#bbbbbb")) # Keep text grey
         
-    def highlightNextChar(self):
+    def highlightNextChar(self) -> None:
+        """
+        This function takes the block cursor created in the init and uses it to highlight the charater that should be typed next
+        A text cursor is used to navigate through the text on the screen and highlight a character based on where you are in the test
+        """
         # 1. Create a cursor to manipulate the text
         cursor = self.textCursor()
         
@@ -50,8 +62,8 @@ class TypingDisplay(QTextEdit):      #I had AI give guidance for this section bu
         
         # Stop if we are at the end of the text
         if current_index >= len(self.targetText):
-            if self.parent_logic:
-                self.parent_logic.stopTime() #This is why they needed connected so you can stop time automatically
+            if self.parentLogic:
+                self.parentLogic.stopTime() #This is why they needed connected so you can stop time automatically
             return
 
         # 3. Select the NEXT character (the one we want to highlight)
@@ -61,7 +73,12 @@ class TypingDisplay(QTextEdit):      #I had AI give guidance for this section bu
         # 4. Apply the translucent background
         cursor.setCharFormat(self.blockCursorFormat)
         
-    def startTest(self, text):
+    def startTest(self, text: str) -> None:
+        """
+        Starts the test
+        Gets text from the background logic and sets the text to the randomly created string
+        This function is also responsible for clearing format between tests.
+        """
         self.targetText = text
         self.typedText = ""
         self.setText(text)
@@ -80,10 +97,16 @@ class TypingDisplay(QTextEdit):      #I had AI give guidance for this section bu
         self.setFocus()                  
         self.highlightNextChar()       #<-
     
-    def stopTest(self):
+    def stopTest(self) -> None:
+        """
+        Changes the testActive varaible to False
+        """
         self.testActive = False
     
-    def resetTest(self): #Resets it to default color. 
+    def resetTest(self) -> None: #Resets it to default color. 
+        """
+        Resets the test when the reset button is clicked in the background logic using a cursor
+        """
         cursor = self.textCursor()
         cursor.select(QTextCursor.SelectionType.Document)
         cursor.setCharFormat(self.defaultFormat)
@@ -95,7 +118,13 @@ class TypingDisplay(QTextEdit):      #I had AI give guidance for this section bu
         self.setCursorWidth(0) # Hide real cursor
         self.is_active = False
         
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event) -> None:
+        """
+        Responsible for the typing logic
+        First checks to see if return / enter is clicked to change or submit the test
+        Next it checks to see if the pressed key was a backspace
+        If is not either of those it is typical keyboard input and depending on if it was correct or not changes the color
+        """
         if event.key() == Qt.Key.Key_Return:
             # Call the parent event to let the signal bubble up
             super().keyPressEvent(event)
@@ -131,8 +160,6 @@ class TypingDisplay(QTextEdit):      #I had AI give guidance for this section bu
                 self.highlightNextChar()
                 
             return
-
-        # We want the Main Window to handle "Enter" (to stop the game), not this widget.
         
         if not event.text() or len(self.typedText) >= len(self.targetText):
             return
