@@ -9,7 +9,14 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
+
 class Ui_MainWindow(object):
+      PURPLE = '#BB86FC'
+      BLUE = '#3700B3'
+      BACKGROUND = '#121212'
+      WHITE = "#F2F0EF"
+        
+        
       def setupUi(self, MainWindow):
         MainWindow.setObjectName("TypingTest")
         MainWindow.setFixedSize(616, 371)
@@ -17,16 +24,16 @@ class Ui_MainWindow(object):
         font.setFamily("Verdana")
         MainWindow.setFont(font)
         MainWindow.setStyleSheet("\n"
-"background-color: rgb(108, 108, 108);")
+f"background-color: {self.BACKGROUND};")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
         self.label.setGeometry(QtCore.QRect(50, 40, 521, 51))
         font = QtGui.QFont()
         self.label.setFont(font)
-        self.label.setStyleSheet("background-color: rgb(51, 51, 51);\n"
-"color: rgb(255, 255, 255);\n"
-"border: 2px solid rgb(255, 255, 255);\n"
+        self.label.setStyleSheet(f"background-color: {self.WHITE};\n"
+"color: #F2F0EF;\n"
+"border: 2px solid #F2F0EF;\n"
 "font: 13pt \"Verdana\";\n"
 "border-radius: 8px;")
         self.label.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
@@ -37,12 +44,12 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(50, 100, 521, 41))
         
         self.wpmLabel = QtWidgets.QLabel(parent=self.centralwidget)
-        self.wpmLabel.setGeometry(QtCore.QRect(120, 150, 360, 25))
+        self.wpmLabel.setGeometry(QtCore.QRect(120, 155, 360, 25))
         font = QtGui.QFont()
         self.wpmLabel.setFont(font)
         self.wpmLabel.setStyleSheet("background-color: rgb(51, 51, 51);\n"
-"color: rgb(255, 255, 255);\n"
-"border: 2px solid rgb(255, 255, 255);\n"
+"color: #F2F0EF;\n"
+f"border: 2px solid {self.PURPLE};\n"
 "border-radius: 8px;")
         self.wpmLabel.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.wpmLabel.setLineWidth(2)
@@ -58,9 +65,9 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.lineEdit.setFont(font)
         self.lineEdit.setStyleSheet("background-color: rgb(51, 51, 51);\n"
-"border: 2px solid rgb(255, 255, 255);\n"
-"color: rgb(255, 255, 255);\n"
-"border-color: rgb(255, 255, 255);\n"
+"border: 2px solid #F2F0EF;\n"
+"color: #F2F0EF;\n"
+"border-color: #F2F0EF;\n"
 "font: 13pt \"Verdana\";\n"
 "border-radius: 8px;")
         self.lineEdit.setFrame(True)
@@ -75,7 +82,7 @@ class Ui_MainWindow(object):
         font.setItalic(False)
         font.setWeight(75)
         self.label_2.setFont(font)
-        self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_2.setStyleSheet("color: #F2F0EF; font-weight: bold;")
         self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
@@ -85,28 +92,28 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_3.setFont(font)
-        self.label_3.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_3.setStyleSheet("color: #F2F0EF; font-weight: bold;")
         self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_4.setGeometry(QtCore.QRect(20, 220, 155, 16))
-        self.label_4.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_4.setStyleSheet("color: #F2F0EF;")
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(20, 250, 155, 16))
-        self.label_5.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_5.setStyleSheet("color: #F2F0EF;")
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_6.setGeometry(QtCore.QRect(20, 280, 155, 16))
-        self.label_6.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_6.setStyleSheet("color: #F2F0EF;")
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_7.setGeometry(QtCore.QRect(20, 310, 155, 16))
-        self.label_7.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_7.setStyleSheet("color: #F2F0EF;")
         self.label_7.setObjectName("label_7")
         self.label_8 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(20, 340, 155, 16))
-        self.label_8.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_8.setStyleSheet("color: #F2F0EF;")
         self.label_8.setObjectName("label_8")
         self.label_9 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_9.setGeometry(QtCore.QRect(220, 180, 131, 41))
@@ -115,21 +122,21 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_9.setFont(font)
-        self.label_9.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_9.setStyleSheet("color: #F2F0EF; font-weight: bold;")
         self.label_9.setObjectName("label_9")
         self.radioButton = QtWidgets.QRadioButton(parent=self.centralwidget)
         self.radioButton.setGeometry(QtCore.QRect(250, 220, 111, 20))
         font = QtGui.QFont()
         font.setFamily("Verdana")
         self.radioButton.setFont(font)
-        self.radioButton.setStyleSheet("color: rgb(255, 255, 255);")
+        self.radioButton.setStyleSheet("color: #F2F0EF;")
         self.radioButton.setObjectName("radioButton")
         self.radioButton_2 = QtWidgets.QRadioButton(parent=self.centralwidget)
         self.radioButton_2.setGeometry(QtCore.QRect(250, 250, 100, 20))
         font = QtGui.QFont()
         font.setFamily("Verdana")
         self.radioButton_2.setFont(font)
-        self.radioButton_2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.radioButton_2.setStyleSheet("color: #F2F0EF;")
         self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_2.setChecked(True)
         self.radioButton_3 = QtWidgets.QRadioButton(parent=self.centralwidget)
@@ -137,14 +144,14 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Verdana")
         self.radioButton_3.setFont(font)
-        self.radioButton_3.setStyleSheet("color: rgb(255, 255, 255);")
+        self.radioButton_3.setStyleSheet("color: #F2F0EF;")
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton_4 = QtWidgets.QRadioButton(parent=self.centralwidget)
         self.radioButton_4.setGeometry(QtCore.QRect(250, 310, 100, 20))
         font = QtGui.QFont()
         font.setFamily("Verdana")
         self.radioButton_4.setFont(font)
-        self.radioButton_4.setStyleSheet("color: rgb(255, 255, 255);")
+        self.radioButton_4.setStyleSheet("color: #F2F0EF;")
         self.radioButton_4.setObjectName("radioButton_4")
         self.startButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.startButton.setGeometry(QtCore.QRect(420, 190, 113, 41))
@@ -152,9 +159,9 @@ class Ui_MainWindow(object):
         font.setFamily("Verdana")
         self.startButton.setFont(font)
         self.startButton.setStyleSheet("background-color: rgb(51, 51, 51);\n"
-"border: 2px solid rgb(255, 255, 255);\n"
-"color: rgb(255, 255, 255);\n"
-"border-color: rgb(255, 255, 255);\n"
+"border: 2px solid #F2F0EF;\n"
+"color: #F2F0EF;\n"
+f"border-color: {self.PURPLE};\n"
 "font: 13pt \"Verdana\";\n"
 "border-radius: 8px;")
         self.startButton.setObjectName("startButton")
@@ -164,18 +171,18 @@ class Ui_MainWindow(object):
         font.setFamily("Verdana")
         self.resetButton.setFont(font)
         self.resetButton.setStyleSheet("background-color: rgb(51, 51, 51);\n"
-"border: 2px solid rgb(255, 255, 255);\n"
-"color: rgb(255, 255, 255);\n"
-"border-color: rgb(255, 255, 255);\n"
+"border: 2px solid #F2F0EF;\n"
+"color: #F2F0EF;\n"
+f"border-color: {self.PURPLE};\n"
 "font: 13pt \"Verdana\";\n"
 "border-radius: 8px;")
         self.resetButton.setObjectName("resetButton")
         self.label_10 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_10.setGeometry(QtCore.QRect(360, 310, 231, 41))
+        self.label_10.setGeometry(QtCore.QRect(400, 310, 145, 41))
         font = QtGui.QFont()
         font.setFamily("Verdana")
         self.label_10.setFont(font)
-        self.label_10.setStyleSheet("color: rgb(255, 255, 255);\n"
+        self.label_10.setStyleSheet("color: #F2F0EF;\n"
 "")
         self.label_10.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.label_10.setLineWidth(2)
@@ -192,7 +199,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "typingTest"))
         self.label.setText(_translate("MainWindow", f'Click "Start" to begin'))
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "Begin typing here..."))
-        self.wpmLabel.setText(_translate("MainWindow", "Words Per Minute"))
+        self.wpmLabel.setText(_translate("MainWindow", "Words Per Minute: "))
         self.label_2.setText(_translate("MainWindow", "TYPING TEST"))
         self.label_3.setText(_translate("MainWindow", "High Scores"))
         self.label_4.setText(_translate("MainWindow", "1)"))

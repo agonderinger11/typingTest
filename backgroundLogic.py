@@ -1,62 +1,67 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QTextCharFormat, QColor, QTextCursor
 from typeGui import *
 import random
 import time
 import csv
 from datetime import datetime
+from typingWindowLogic import *
 
 #add type hinting, docstrings, private class variables, error handlin
-
-class Logic(QMainWindow, Ui_MainWindow):
+class Logic(QMainWindow, Ui_MainWindow): 
     
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         
+        self.label.hide()
+        self.lineEdit.hide()
+        
+        #Creating the typing window
+        self.typingWidget = TypingDisplay(self.centralwidget)
+        self.typingWidget.parent_logic = self 
+        self.typingWidget.setGeometry(50, 40, 521, 110)
+        self.typingWidget.setText("Click 'Start', or press Enter to begin")
+
         # Initialize instance variables
-        self.wordString = ""
         self.running = False
         self.initialTime = 0
-        self.elapsedTime = 0
         self.lastTime = 0
-        self.lastTyped = ""
         self.errors = 0
         
+        #Connecting buttons
         self.startButton.clicked.connect(self.startFunc)
         self.resetButton.clicked.connect(self.resetFunc)
         self.updateInGameLeaderboard()
 
     def startFunc(self):
-        if not self.running:
-            self.lineEdit.setReadOnly(False)
-            self.lineEdit.setText("") #clear boxes
-            self.wordString = ""
-            self.label.setText("")
+        self.typingWidget.setReadOnly(True) # Ensure it stays read-only   
+        self.wpmLabel.setText("Words Per Minute:")
+        self.setWordsForTest() #get the number of words and which words from the list
         
-            self.setWordsForTest() #get the number of words and which words from the list/
-            self.startTime()
+        self.startTime()
     
     def resetFunc(self):
-        self.label.setText(f'Click "Start" to begin')
-        self.lineEdit.setText("")
-        self.wordString = ""
+        self.typingWidget.setText("Click 'Start', or press Enter to begin")
+        self.typingWidget.setReadOnly(True)
+        self.typingWidget.typedText = ""
+        self.typingWidget.targetText = ""
+        
         self.running = False
         self.initialTime = 0
-        self.elapsedTime = 0
+        
         self.lastTime = 0
-        self.lastTyped = ""
         self.errors = 0
+        
+        self.typingWidget.resetTest()
     
     def keyPressEvent(self, event):
-        # Call the base class implementation to ensure default event handling
-        super().keyPressEvent(event)
-
         if event.key() == Qt.Key.Key_Return and self.running == True:
             self.stopTime()
         elif event.key() == Qt.Key.Key_Return and self.running == False: 
             self.startFunc()
+        else: 
+            super().keyPressEvent(event)
     
     def getRadioButton(self):
         if self.radioButton.isChecked():
@@ -72,40 +77,43 @@ class Logic(QMainWindow, Ui_MainWindow):
 
     def setWordsForTest(self):
         amount = self.getRadioButton()
+        wordString = ''
         
         with open("files/englishWords.txt", 'r') as file: #Put the OS seperator thing in here later
             lines = file.readlines()
             for i in range(amount):
                 randomNumber = random.randint(1, 5000)
                 randomWord = lines[randomNumber].strip()
-                self.wordString = self.wordString + randomWord + " "
+                wordString = wordString + randomWord + " "
         
-        self.wordString = self.wordString[:-1] #gets rid of ending space
-        self.label.setText(self.wordString)
-    
+        wordString = wordString[:-1] #gets rid of ending space
+        self.typingWidget.startTest(wordString)    
+        
     def startTime(self):
         if not self.running:
             self.initialTime = time.perf_counter() #from python time documentation
             self.running = True
+            self.typingWidget.setFocus() # Automatically click into the box
             
     def stopTime(self):
         if self.running:
             endTime = time.perf_counter()
-            self.elapsedTime = endTime - self.initialTime
+            self.lastTime = endTime - self.initialTime
             self.running = False
             
-            self.lastTime = self.elapsedTime
             accuracy = self.getAccuracy()
             self.calculateWPM(accuracy)
             
             self.initialTime = 0
-            self.elapsedTime = 0.0
+            self.lastTime = 0.0
             self.lineEdit.setReadOnly(True)
+            
+            self.typingWidget.stopTest()
 
     def getAccuracy(self):
-        actualChars = list(self.wordString)
-        typedChars = list(self.lineEdit.text())
-        # print(typedChars) 
+        actualChars = list(self.typingWidget.targetText)
+        typedChars = list(self.typingWidget.typedText)
+
         correct = 0
         self.errors = 0
         total = len(actualChars)
@@ -131,15 +139,13 @@ class Logic(QMainWindow, Ui_MainWindow):
     def calculateWPM(self, accuracy):
         #gross wpm = (total chars / 5) / time in minutes -> from google 
         #net wpm = gross wpm * (accuracy)
-        numChars = len(self.wordString)
+        numChars = len(self.typingWidget.targetText)
         timeInMin = self.lastTime / 60 #number of seconds in a minute
         grossWPM = (numChars / 5) / timeInMin
-        # print(self.errors)
         netWPM = grossWPM * (accuracy/100)
         self.wpmLabel.setText(f'Gross WPM: {grossWPM:.2f} | Net WPM: {netWPM:.2f} | Acc: {accuracy:.2f}%')
         
         self.updateLeaderboardCSV(netWPM, grossWPM, accuracy)
-        # print(self.errors)
         
     def updateLeaderboardCSV(self, net, gross, acc):
         csvOutput = []
@@ -183,7 +189,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         except FileNotFoundError:
             for i in range(1, 6):   
                 num = 3 + i
-                label = getattr(self, f"label_{num}", None) #This function came from the google AI overview
+                label = getattr(self, f"label_{num}", None) #The getattr function came from the google AI overview
                 if label and len(csvOutput) > i:
                     label.setText(f'')
 
@@ -193,8 +199,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             
         for i in range(1, entries):   
             num = 3 + i
-            label = getattr(self, f"label_{num}", None) #This function came from the google AI overview
+            label = getattr(self, f"label_{num}", None) #The getattr function came from the google AI overview
             if label and len(csvOutput) > i:
                 wpm = float(csvOutput[i][0])
                 label.setText(f'{i}) WPM: {wpm:.2f}, {csvOutput[i][4]}')
-                    
