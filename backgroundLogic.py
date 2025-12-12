@@ -8,7 +8,6 @@ from datetime import datetime
 from typingWindowLogic import *
 import os
 
-#add type hinting, docstrings, private class variables, error handlin
 class Logic(QMainWindow, Ui_MainWindow): 
     """
     This class provides the logic for the main window such as handling button presses/ radio buttons, leaderboard updating,
