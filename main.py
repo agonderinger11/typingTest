@@ -1,4 +1,4 @@
-from logic import *
+from backgroundLogic import *
 
 def main():
     import sys

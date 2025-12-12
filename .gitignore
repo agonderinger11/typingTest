@@ -1,3 +1,5 @@
 convert.py
 typeTestGui.ui
 __pycache__/
+leaderboard.csv
+.DS_Store
